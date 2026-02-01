@@ -6,189 +6,168 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="الاستعلام عن رقم الجلوس للطلبة باستخدام رقم القيد">
     <meta name="keywords" content="رقم الجلوس, رقم القيد, استعلام, طلبة">
-    <title>الاستعلام عن رقم الجلوس</title>
+    <title>بوابة الطالب - قسم المختبرات الطبية</title>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Amiri:wght@400;700&display=swap"
         rel="stylesheet">
 
-    <!-- html2canvas for converting to image -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
+    <!-- html2canvas is replaced by window.print() but kept for legacy if needed -->
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <!-- خلفية متحركة -->
-    <div class="background-animation">
-        <div class="floating-shape shape-1"></div>
-        <div class="floating-shape shape-2"></div>
-        <div class="floating-shape shape-3"></div>
-    </div>
+    <!-- خلفية بسيطة -->
+    <div class="background-overlay"></div>
 
-    <!-- الحاوية الرئيسية -->
-    <main class="container">
-        <!-- رأس الجامعة -->
-        <div class="university-header">
-            <div class="university-logo">🎓</div>
-            <div class="university-info">
-                <h1 class="university-name">جامعة المرقب</h1>
-                <h2 class="faculty-name">كلية العلوم الصحية</h2>
-                <h3 class="department-name">قسم المختبرات الطبية</h3>
+    <!-- Main Container -->
+    <main class="main-container">
+
+        <!-- صفحة البحث (البوابة) -->
+        <div id="searchPage" class="page-section active">
+            <!-- Header -->
+            <header class="portal-header">
+                <div class="university-logo-container">
+                    <div class="university-logo">🎓</div>
+                </div>
+                <div class="university-titles">
+                    <h1>جامعة المرقب</h1>
+                    <h2>كلية العلوم الصحية</h2>
+                    <h3>قسم المختبرات الطبية</h3>
+                </div>
+            </header>
+
+            <div class="portal-card">
+                <h2 class="portal-title">خدمة الاستعلام عن أرقام الجلوس</h2>
+                <p class="portal-subtitle">أدخل رقم القيد للوصول إلى بطاقة الدخول للامتحان النهائي</p>
+
+                <div class="search-box">
+                    <div class="input-group">
+                        <span class="icon">🔢</span>
+                        <input type="text" id="searchInput" placeholder="رقم القيد الدراسي" autocomplete="off"
+                            inputmode="numeric">
+                    </div>
+                    <button id="searchBtn" class="primary-btn">
+                        <span>عرض النتيجة</span>
+                        <span class="btn-arrow">←</span>
+                    </button>
+                </div>
+
+                <div id="loadingIndicator" class="loading-indicator" style="display: none;">
+                    <div class="spinner"></div>
+                    <span>جاري البحث في قاعدة البيانات...</span>
+                </div>
+
+                <div id="errorMessage" class="error-message" style="display: none;">
+                    <span class="error-icon">⚠️</span>
+                    <span id="errorText">لم يتم العثور على الطالب</span>
+                </div>
+            </div>
+
+            <footer class="portal-footer">
+                <p>© 2026 جميع الحقوق محفوظة - قسم المختبرات الطبية</p>
+                <div class="credits">تصميم وبرمجة: <span class="dev-name">أ. عبدالفتاح البكوش</span></div>
+            </footer>
+        </div>
+
+        <!-- صفحة النتيجة (الوثيقة الرسمية) -->
+        <div id="resultPage" class="page-section" style="display: none;">
+
+            <!-- شريط الأدوات العلوية (لا يظهر في الطباعة) -->
+            <div class="action-bar no-print">
+                <button id="backBtn" class="secondary-btn">
+                    <span>↪</span> العودة للبحث
+                </button>
+                <button id="printBtn" class="action-btn">
+                    <span>🖨️</span> طباعة البطاقة (PDF)
+                </button>
+            </div>
+
+            <!-- الوثيقة الرسمية -->
+            <div id="officialDocument" class="official-document">
+                <!-- ترويسة الوثيقة -->
+                <div class="doc-header">
+                    <div class="doc-logo">🎓</div>
+                    <div class="doc-titles">
+                        <h1>جامعة المرقب</h1>
+                        <h2>كلية العلوم الصحية</h2>
+                        <h3>قسم المختبرات الطبية</h3>
+                    </div>
+                    <div class="doc-date">
+                        <span>العام الجامعي: </span>
+                        <span id="docYear" class="info-fill">2025/2026</span>
+                    </div>
+                </div>
+
+                <div class="doc-separator"></div>
+
+                <div class="doc-title-box">
+                    <h2>بطاقة دخول الامتحانات النهائية</h2>
+                    <p>Exam Entry Card</p>
+                </div>
+
+                <!-- جدول البيانات الرسمي -->
+                <div class="student-info-grid">
+                    <div class="info-row">
+                        <div class="info-label">اسم الطالب / Student Name</div>
+                        <div id="resName" class="info-value"></div>
+                    </div>
+                    <div class="info-row two-col">
+                        <div class="col">
+                            <div class="info-label">رقم القيد / Registration No</div>
+                            <div id="resRegNum" class="info-value"></div>
+                        </div>
+                        <div class="col">
+                            <div class="info-label">السنة الدراسية / Year</div>
+                            <div id="resAcademicYear" class="info-value"></div>
+                        </div>
+                    </div>
+
+                    <div class="seat-hall-container">
+                        <div class="box-item">
+                            <div class="box-label">رقم الجلوس</div>
+                            <div class="box-sublabel">Seat Number</div>
+                            <div id="resSeatNum" class="box-value big-number"></div>
+                        </div>
+                        <div class="box-item">
+                            <div class="box-label">القاعة الامتحانية</div>
+                            <div class="box-sublabel">Exam Hall</div>
+                            <div id="resHall" class="box-value hall-name"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- تعليمات رسمية -->
+                <div class="doc-instructions">
+                    <h3>تعليمات وضوابط الامتحانات:</h3>
+                    <ul>
+                        <li>يجب إحضار هذه البطاقة وإبرازها عند دخول القاعة الامتحانية.</li>
+                        <li>الحضور قبل موعد الامتحان بـ 15 دقيقة على الأقل.</li>
+                        <li>يمنع منعاً باتاً الدخول بالهاتف النقال أو الحقائب أو الكتب.</li>
+                        <li>التقيد التام برقم الجلوس والقاعة المخصصة للطالب.</li>
+                    </ul>
+                </div>
+
+                <!-- التذييل الرسمي -->
+                <div class="doc-footer">
+                    <div class="signature-block">
+                        <p class="sig-title">اعتماد رئيس القسم</p>
+                        <div class="sig-image">
+                            <!-- يمكن إضافة صورة توقيع هنا -->
+                            أ. عبدالفتاح البكوش
+                        </div>
+                    </div>
+                    <div class="doc-id">
+                        Ref: <span id="refId"></span>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="divider"></div>
-
-        <!-- العنوان -->
-        <header class="header">
-            <h1 class="main-title">
-                <span class="title-icon">🎓</span>
-                الاستعلام عن رقم الجلوس
-            </h1>
-            <p class="subtitle">أدخل رقم القيد للحصول على معلومات الجلوس</p>
-        </header>
-
-        <!-- نموذج البحث -->
-        <section class="search-section">
-            <div class="search-container">
-                <div class="search-icon">🔍</div>
-                <input type="text" id="searchInput" class="search-input" placeholder="أدخل رقم القيد (مثال: 222031353)"
-                    autocomplete="off" inputmode="numeric">
-                <button id="clearBtn" class="clear-btn" style="display: none;">✕</button>
-            </div>
-            <button id="searchBtn" class="search-btn">
-                <span class="btn-text">بحث</span>
-                <span class="btn-icon">→</span>
-            </button>
-        </section>
-
-        <!-- إرشادات الامتحان -->
-        <section class="instructions-section">
-            <div class="instructions-card">
-                <div class="instructions-header">
-                    <span class="instructions-icon">📋</span>
-                    <h2>تعليمات مهمة</h2>
-                </div>
-                <div class="instructions-content">
-                    <div class="instruction-item">
-                        <span class="instruction-emoji">🕐</span>
-                        <div class="instruction-text">
-                            <strong>موعد الامتحان:</strong> يبدأ الامتحان الساعة <span class="highlight-time">11:00
-                                صباحاً</span>
-                        </div>
-                    </div>
-                    <div class="instruction-item">
-                        <span class="instruction-emoji">⏰</span>
-                        <div class="instruction-text">
-                            <strong>مهم جداً:</strong> الرجاء الالتزام بالموعد المحدد والحضور مبكراً
-                        </div>
-                    </div>
-                    <div class="instruction-item">
-                        <span class="instruction-emoji">🎫</span>
-                        <div class="instruction-text">
-                            <strong>رقم الجلوس:</strong> تأكد من معرفة رقم جلوسك والقاعة الامتحانية
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- منطقة النتائج -->
-        <section id="resultSection" class="result-section" style="display: none;">
-            <!-- سيتم إضافة النتائج هنا بواسطة JavaScript -->
-        </section>
-
-        <!-- رسالة عدم وجود نتائج -->
-        <section id="notFoundSection" class="not-found-section" style="display: none;">
-            <div class="not-found-card">
-                <div class="not-found-icon">❌</div>
-                <h2 class="not-found-title">لم يتم العثور على نتائج</h2>
-                <p class="not-found-text">رقم القيد غير موجود في قاعدة البيانات</p>
-                <p class="not-found-hint">تأكد من إدخال رقم القيد بشكل صحيح</p>
-            </div>
-        </section>
-
-        <!-- رسالة التحميل -->
-        <section id="loadingSection" class="loading-section" style="display: none;">
-            <div class="loading-spinner"></div>
-            <p class="loading-text">جاري البحث...</p>
-        </section>
     </main>
-
-    <!-- تذييل -->
-    <footer class="footer">
-        <p>© 2026 نظام الاستعلام عن أرقام الجلوس</p>
-        <p class="developer-credit">تم إعداد هذه المنظومة من قبل الأستاذ <strong>عبدالفتاح البكوش</strong></p>
-    </footer>
-
-    <!-- قالب الطباعة الرسمي (مخفي في الشاشة العادية) -->
-    <div id="print-document" class="print-document">
-        <!-- ترويسة المستند -->
-        <header class="print-header">
-            <div class="print-logo">🎓</div>
-            <div class="print-university-info">
-                <h1>جامعة المرقب</h1>
-                <h2>كلية العلوم الصحية</h2>
-                <h3>قسم المختبرات الطبية</h3>
-            </div>
-            <div class="print-date">التاريخ: <span id="printDate"></span></div>
-        </header>
-
-        <hr class="print-divider">
-
-        <h2 class="print-title">بطاقة دخول الامتحان النهائي</h2>
-
-        <!-- جدول البيانات -->
-        <table class="print-table">
-            <tbody>
-                <tr>
-                    <th>اسم الطالب</th>
-                    <td id="printName"></td>
-                </tr>
-                <tr>
-                    <th>رقم القيد</th>
-                    <td id="printRegNum"></td>
-                </tr>
-                <tr>
-                    <th>رقم الجلوس</th>
-                    <td id="printSeatNum" class="highlight-print"></td>
-                </tr>
-                <tr>
-                    <th>السنة الدراسية</th>
-                    <td id="printYear"></td>
-                </tr>
-                <tr>
-                    <th>القاعة الامتحانية</th>
-                    <td id="printHall"></td>
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- تعليمات الامتحان -->
-        <div class="print-instructions">
-            <h3>تنبيهات هامة قبل الامتحان:</h3>
-            <ol>
-                <li>الحضور إلى القاعة قبل موعد الامتحان بـ 15 دقيقة على الأقل.</li>
-                <li>إبراز البطاقة الجامعية أو إثبات الهوية عند الدخول.</li>
-                <li>يمنع منعاً باتاً إدخال الهاتف النقال أو أي أجهزة إلكترونية إلى قاعة الامتحان.</li>
-                <li>الالتزام التام بالهدوء والنظام داخل القاعة الامتحانية.</li>
-                <li>التأكد من الجلوس في المقعد المخصص حسب رقم الجلوس المعلن.</li>
-            </ol>
-            <p class="exam-time-note">ملاحظة: يبدأ الامتحان الساعة <strong>11:30 صباحاً</strong></p>
-        </div>
-
-        <!-- التوقيع -->
-        <div class="print-footer">
-            <div class="print-signature">
-                <p>اعتماد رئيس القسم</p>
-                <div class="signature-space">أ. عبدالفتاح البكوش</div>
-            </div>
-        </div>
-    </div>
 
     <script src="script.js"></script>
 </body>

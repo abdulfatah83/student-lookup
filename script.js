@@ -1,254 +1,118 @@
-// متغيرات عامة
-// تحديد رابط API - سيتم استخدامه في الإنتاج أيضاً
-const API_BASE_URL = window.location.origin; // يستخدم نفس المصدر
+// Basic Setup
+const API_BASE_URL = window.location.origin;
 
-// العناصر من DOM
+// DOM Elements
+const searchPage = document.getElementById('searchPage');
+const resultPage = document.getElementById('resultPage');
+
 const searchInput = document.getElementById('searchInput');
 const searchBtn = document.getElementById('searchBtn');
-const clearBtn = document.getElementById('clearBtn');
-const resultSection = document.getElementById('resultSection');
-const notFoundSection = document.getElementById('notFoundSection');
-const loadingSection = document.getElementById('loadingSection');
+const backBtn = document.getElementById('backBtn');
+const printBtn = document.getElementById('printBtn');
 
-// لا حاجة لتحميل البيانات مسبقاً - سنستخدم API مباشرة
+const loadingIndicator = document.getElementById('loadingIndicator');
+const errorMessage = document.getElementById('errorMessage');
+const errorText = document.getElementById('errorText');
 
-// إظهار/إخفاء زر المسح
-searchInput.addEventListener('input', () => {
-    if (searchInput.value.trim()) {
-        clearBtn.style.display = 'flex';
-    } else {
-        clearBtn.style.display = 'none';
-    }
-});
+// Result Fields
+const resName = document.getElementById('resName');
+const resRegNum = document.getElementById('resRegNum');
+const resAcademicYear = document.getElementById('resAcademicYear');
+const resSeatNum = document.getElementById('resSeatNum');
+const resHall = document.getElementById('resHall');
+const refId = document.getElementById('refId');
+const docYear = document.getElementById('docYear');
+const printDate = document.getElementById('printDate'); // If exists in hidden header
 
-// مسح حقل البحث
-clearBtn.addEventListener('click', () => {
-    searchInput.value = '';
-    clearBtn.style.display = 'none';
-    hideAllSections();
-    searchInput.focus();
-});
-
-// البحث بالضغط على Enter
-searchInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        performSearch();
-    }
-});
-
-// البحث بالنقر على الزر
+// Event Listeners
 searchBtn.addEventListener('click', performSearch);
+backBtn.addEventListener('click', showSearchPage);
+printBtn.addEventListener('click', () => window.print());
 
-// وظيفة البحث الرئيسية
+searchInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') performSearch();
+});
+
+searchInput.addEventListener('input', () => {
+    // Hide error when typing
+    errorMessage.style.display = 'none';
+});
+
+// Functions
 async function performSearch() {
-    const registrationNumber = searchInput.value.trim();
+    const query = searchInput.value.trim();
 
-    // التحقق من إدخال رقم القيد
-    if (!registrationNumber) {
-        searchInput.focus();
-        searchInput.classList.add('shake');
-        setTimeout(() => searchInput.classList.remove('shake'), 500);
+    if (!query) {
+        showError('الرجاء إدخال رقم القيد');
         return;
     }
 
-    // إظهار رسالة التحميل
-    showLoading();
+    showLoading(true);
+    errorMessage.style.display = 'none';
 
     try {
-        // استدعاء API
-        const response = await fetch(`${API_BASE_URL}/api/search?registration_number=${encodeURIComponent(registrationNumber)}`);
+        const response = await fetch(`${API_BASE_URL}/api/search?registration_number=${encodeURIComponent(query)}`);
         const data = await response.json();
 
         if (response.ok && data.success) {
-            // تم العثور على الطالب
             displayResult(data.student);
         } else {
-            // الطالب غير موجود
-            displayNotFound();
+            showError('رقم القيد غير موجود في المنظومة. تأكد من الرقم وحاول مجدداً.');
         }
     } catch (error) {
-        console.error('خطأ في البحث:', error);
-        hideAllSections();
-        alert('حدث خطأ في الاتصال بالخادم. يرجى المحاولة مرة أخرى.');
+        console.error(error);
+        showError('خطأ في الاتصال بالخادم.');
+    } finally {
+        showLoading(false);
     }
 }
 
-// عرض النتائج
 function displayResult(student) {
-    hideAllSections();
+    // Populate Data
+    resName.textContent = student.name;
+    resRegNum.textContent = student.registrationNumber; // Using JSON keys from API
+    resAcademicYear.textContent = student.academicYear;
+    resSeatNum.textContent = student.seatNumber;
+    resHall.textContent = student.examHall;
 
-    const resultHTML = `
-        <div class="result-card" id="studentCard" dir="rtl">
-            <!-- رأس الجامعة في البطاقة -->
-            <div class="card-university-header">
-                <div class="card-university-logo">🎓</div>
-                <div class="card-university-name">جامعة المرقب</div>
-                <div class="card-faculty-name">كلية العلوم الصحية - قسم المختبرات الطبية</div>
-            </div>
-            
-            <div class="card-divider"></div>
-            
-            <div class="result-header">
-                <div class="result-icon">✓</div>
-                <div class="result-title">
-                    <h2>بطاقة معلومات الجلوس</h2>
-                    <p>معلومات الطالب</p>
-                </div>
-            </div>
-            
-            <div class="result-details">
-                <div class="detail-item">
-                    <div class="detail-content">
-                        <div class="detail-label">اسم الطالب</div>
-                        <div class="detail-value">${student.name}</div>
-                    </div>
-                    <div class="detail-icon">👤</div>
-                </div>
-                
-                <div class="detail-item">
-                    <div class="detail-content">
-                        <div class="detail-label">رقم القيد</div>
-                        <div class="detail-value">${student.registrationNumber}</div>
-                    </div>
-                    <div class="detail-icon">🎫</div>
-                </div>
-                
-                <div class="detail-item highlight">
-                    <div class="detail-content">
-                        <div class="detail-label">رقم الجلوس</div>
-                        <div class="detail-value">${student.seatNumber}</div>
-                    </div>
-                    <div class="detail-icon">💺</div>
-                </div>
-                
-                <div class="detail-item">
-                    <div class="detail-content">
-                        <div class="detail-label">السنة الدراسية</div>
-                        <div class="detail-value">${student.academicYear}</div>
-                    </div>
-                    <div class="detail-icon">📚</div>
-                </div>
-                
-                <div class="detail-item">
-                    <div class="detail-content">
-                        <div class="detail-label">القاعة الامتحانية</div>
-                        <div class="detail-value">${student.examHall}</div>
-                    </div>
-                    <div class="detail-icon">🏛️</div>
-                </div>
-            </div>
-            
-            <div class="card-footer">
-                <div class="approval-section">
-                    <div class="approval-label">اعتماد رئيس القسم</div>
-                    <div class="signature-line"></div>
-                </div>
-            </div>
-        </div>
-        
-        <button class="print-btn" id="printBtn">
-            <span>📥</span>
-            <span>تحميل البطاقة كصورة</span>
-        </button>
-    `;
+    // Generate a random Reference ID for the "official" look
+    refId.textContent = `STD-${Date.now().toString().slice(-6)}-${Math.floor(Math.random() * 1000)}`;
 
-    resultSection.innerHTML = resultHTML;
-    resultSection.style.display = 'block';
+    // Switch View
+    searchPage.style.display = 'none';
+    resultPage.style.display = 'block';
 
-    // إضافة حدث الطباعة
-    const printBtn = document.getElementById('printBtn');
-    if (printBtn) {
-        printBtn.addEventListener('click', downloadCardAsImage);
-    }
-
-    // تأثير صوت النجاح (اختياري)
-    playSuccessAnimation();
+    // Scroll to top
+    window.scrollTo(0, 0);
 }
 
-// تحميل البطاقة كصورة
-async function downloadCardAsImage() {
-    const card = document.getElementById('studentCard');
-    const printBtn = document.getElementById('printBtn');
+function showSearchPage() {
+    resultPage.style.display = 'none';
+    searchPage.style.display = 'block'; // Or flex/whatever logic
+    searchPage.classList.add('active'); // Ensure animation if any
 
-    if (!card) return;
+    searchInput.value = '';
+    searchInput.focus();
+    errorMessage.style.display = 'none';
+}
 
-    try {
-        // تغيير نص الزر أثناء المعالجة
-        const originalHTML = printBtn.innerHTML;
-        printBtn.innerHTML = '<span>⏳</span><span>جاري التحميل...</span>';
-        printBtn.disabled = true;
-
-        // إنشاء نسخة من البطاقة للطباعة
-        const canvas = await html2canvas(card, {
-            backgroundColor: '#1a1a35',
-            scale: 2, // جودة عالية
-            logging: false,
-            useCORS: true
-        });
-
-        // تحويل إلى صورة وتحميلها
-        canvas.toBlob(function (blob) {
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            const registrationNumber = card.querySelector('.detail-value').textContent || 'student';
-            link.download = `بطاقة_جلوس_${Date.now()}.png`;
-            link.href = url;
-            link.click();
-            URL.revokeObjectURL(url);
-
-            // إعادة الزر لحالته الأصلية
-            printBtn.innerHTML = originalHTML;
-            printBtn.disabled = false;
-        });
-
-    } catch (error) {
-        console.error('خطأ في تحميل البطاقة:', error);
-        alert('حدث خطأ في تحميل البطاقة. يرجى المحاولة مرة أخرى.');
-        printBtn.innerHTML = '<span>📥</span><span>تحميل البطاقة كصورة</span>';
-        printBtn.disabled = false;
+function showLoading(isLoading) {
+    if (isLoading) {
+        searchBtn.disabled = true;
+        loadingIndicator.style.display = 'flex';
+        searchBtn.style.opacity = '0.7';
+    } else {
+        searchBtn.disabled = false;
+        loadingIndicator.style.display = 'none';
+        searchBtn.style.opacity = '1';
     }
 }
 
-// عرض رسالة عدم العثور
-function displayNotFound() {
-    hideAllSections();
-    notFoundSection.style.display = 'block';
-}
+function showError(msg) {
+    errorText.textContent = msg;
+    errorMessage.style.display = 'flex';
 
-// إظهار رسالة التحميل
-function showLoading() {
-    hideAllSections();
-    loadingSection.style.display = 'block';
+    // Shake effect
+    const box = document.querySelector('.search-box');
+    box.classList.add('shake-animation'); // You'd need CSS for this or just rely on the existing shake on error msg
 }
-
-// إخفاء جميع الأقسام
-function hideAllSections() {
-    resultSection.style.display = 'none';
-    notFoundSection.style.display = 'none';
-    loadingSection.style.display = 'none';
-}
-
-// تأثير النجاح
-function playSuccessAnimation() {
-    const resultCard = document.querySelector('.result-card');
-    if (resultCard) {
-        resultCard.style.animation = 'none';
-        setTimeout(() => {
-            resultCard.style.animation = 'fadeInScale 0.5s ease-out';
-        }, 10);
-    }
-}
-
-// تأثير اهتزاز لحقل البحث عند الخطأ
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes shake {
-        0%, 100% { transform: translateX(0); }
-        25% { transform: translateX(-10px); }
-        75% { transform: translateX(10px); }
-    }
-    .shake {
-        animation: shake 0.3s ease-in-out;
-    }
-`;
-document.head.appendChild(style);

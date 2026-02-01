@@ -1,851 +1,481 @@
-/* ===== CSS Variables ===== */
+/* ===== Academic Theme Variables ===== */
 :root {
-    /* ألوان متدرجة عصرية */
-    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    --dark-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    --academic-navy: #002147;
+    --academic-gold: #c5a059;
+    --academic-gold-light: #e6c88a;
+    --action-red: #8b0000;
+    --clean-white: #ffffff;
+    --off-white: #f8f9fa;
+    --text-dark: #2c3e50;
+    --text-grey: #667687;
 
-    /* ألوان أساسية */
-    --bg-primary: #0f0f23;
-    --bg-secondary: #1a1a35;
-    --bg-card: rgba(255, 255, 255, 0.05);
-    --text-primary: #ffffff;
-    --text-secondary: #b4b4c5;
-    --accent-blue: #4facfe;
-    --accent-purple: #764ba2;
-    --accent-pink: #f5576c;
+    --shadow-soft: 0 4px 15px rgba(0, 33, 71, 0.1);
+    --shadow-active: 0 8px 25px rgba(0, 33, 71, 0.15);
 
-    /* تأثيرات */
-    --glass-bg: rgba(255, 255, 255, 0.08);
-    --glass-border: rgba(255, 255, 255, 0.18);
-    --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.5);
-    --shadow-glow: 0 0 40px rgba(102, 126, 234, 0.3);
-
-    /* خطوط */
     --font-primary: 'Cairo', sans-serif;
-    --font-secondary: 'Tajawal', sans-serif;
+    --font-formal: 'Amiri', serif;
 }
 
-/* ===== إعادة تعيين عامة ===== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: var(--font-primary);
 }
 
 body {
-    font-family: var(--font-primary);
-    background: var(--dark-gradient);
-    color: var(--text-primary);
+    background-color: var(--off-white);
+    color: var(--text-dark);
+    line-height: 1.6;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    overflow-x: hidden;
-    position: relative;
-    text-align: right;
-    /* Default alignment for Arabic */
 }
 
-/* Center alignment for specific containers */
-.container,
-.header,
-.university-header,
-.footer,
-.search-btn,
-.not-found-card,
-.loading-section {
-    text-align: center;
-}
-
-/* ===== خلفية متحركة ===== */
-.background-animation {
+/* ===== Background Overlay (Subtle Pattern) ===== */
+.background-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    background-image:
+        radial-gradient(circle at 10% 20%, rgba(0, 33, 71, 0.03) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(197, 160, 89, 0.05) 0%, transparent 25%);
     z-index: -1;
-    overflow: hidden;
 }
 
-.floating-shape {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(60px);
-    opacity: 0.3;
-    animation: float 20s infinite ease-in-out;
-}
-
-.shape-1 {
-    width: 400px;
-    height: 400px;
-    background: var(--primary-gradient);
-    top: -200px;
-    right: -200px;
-    animation-delay: 0s;
-}
-
-.shape-2 {
-    width: 350px;
-    height: 350px;
-    background: var(--secondary-gradient);
-    bottom: -150px;
-    left: -150px;
-    animation-delay: 7s;
-}
-
-.shape-3 {
-    width: 300px;
-    height: 300px;
-    background: var(--success-gradient);
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    animation-delay: 14s;
-}
-
-@keyframes float {
-
-    0%,
-    100% {
-        transform: translateY(0) rotate(0deg);
-    }
-
-    25% {
-        transform: translateY(-30px) rotate(90deg);
-    }
-
-    50% {
-        transform: translateY(0) rotate(180deg);
-    }
-
-    75% {
-        transform: translateY(30px) rotate(270deg);
-    }
-}
-
-/* ===== الحاوية الرئيسية ===== */
-.container {
-    max-width: 800px;
+/* ===== Main Container ===== */
+.main-container {
+    max-width: 900px;
     margin: 0 auto;
-    padding: 40px 20px;
-    flex: 1;
-    width: 100%;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
-/* ===== رأس الجامعة ===== */
-.university-header {
+/* ===== Portal (Search) Page Style ===== */
+.portal-header {
     text-align: center;
-    margin-bottom: 30px;
-    animation: fadeInDown 0.8s ease-out;
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: var(--shadow-md);
+    margin-bottom: 40px;
+}
+
+.university-logo-container {
+    margin-bottom: 20px;
 }
 
 .university-logo {
-    font-size: 4rem;
-    margin-bottom: 20px;
-    filter: drop-shadow(0 0 20px rgba(102, 126, 234, 0.6));
+    font-size: 5rem;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
 }
 
-.university-name {
-    font-size: 2rem;
+.university-titles h1 {
+    color: var(--academic-navy);
+    font-size: 2.2rem;
     font-weight: 800;
-    background: var(--primary-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
-.faculty-name {
+.university-titles h2 {
+    color: var(--academic-gold);
     font-size: 1.4rem;
     font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 8px;
 }
 
-.department-name {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: var(--text-secondary);
-}
-
-.divider {
-    height: 2px;
-    background: var(--primary-gradient);
-    margin: 30px auto;
-    max-width: 200px;
-    border-radius: 2px;
-    opacity: 0.5;
-}
-
-/* ===== العنوان ===== */
-.header {
-    text-align: center;
-    margin-bottom: 50px;
-    animation: fadeInDown 0.8s ease-out;
-}
-
-.main-title {
-    font-size: 3rem;
-    font-weight: 800;
-    background: var(--primary-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-}
-
-.title-icon {
-    font-size: 3.5rem;
-    filter: drop-shadow(0 0 20px rgba(102, 126, 234, 0.6));
-    animation: bounce 2s infinite;
-}
-
-.subtitle {
-    font-size: 1.2rem;
-    color: var(--text-secondary);
-    font-family: var(--font-secondary);
-}
-
-/* ===== قسم البحث ===== */
-.search-section {
-    margin-bottom: 40px;
-    animation: fadeInUp 0.8s ease-out 0.2s both;
-}
-
-.search-container {
-    position: relative;
-    margin-bottom: 20px;
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
-    border-radius: 20px;
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    box-shadow: var(--shadow-md);
-    transition: all 0.3s ease;
-}
-
-.search-container:focus-within {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-glow), var(--shadow-lg);
-    border-color: var(--accent-blue);
-}
-
-.search-icon {
-    font-size: 1.5rem;
-    color: var(--accent-blue);
-}
-
-.search-input {
-    flex: 1;
-    background: transparent;
-    border: none;
-    outline: none;
-    color: var(--text-primary);
+.university-titles h3 {
+    color: var(--text-grey);
     font-size: 1.1rem;
-    font-family: var(--font-primary);
-    padding: 10px 0;
+    font-weight: 500;
 }
 
-.search-input::placeholder {
-    color: var(--text-secondary);
-}
-
-.clear-btn {
-    background: rgba(245, 87, 108, 0.2);
-    border: none;
-    color: var(--accent-pink);
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    transition: all 0.3s ease;
-}
-
-.clear-btn:hover {
-    background: var(--accent-pink);
-    color: white;
-    transform: rotate(90deg);
-}
-
-.search-btn {
-    width: 100%;
-    background: var(--primary-gradient);
-    border: none;
-    color: white;
-    padding: 18px 40px;
-    border-radius: 15px;
-    font-size: 1.3rem;
-    font-weight: 700;
-    font-family: var(--font-primary);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    box-shadow: var(--shadow-md);
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.search-btn::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
-    transform: translate(-50%, -50%);
-    transition: width 0.6s, height 0.6s;
-}
-
-.search-btn:hover::before {
-    width: 300px;
-    height: 300px;
-}
-
-.search-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-glow), var(--shadow-lg);
-}
-
-.search-btn:active {
-    transform: translateY(-1px);
-}
-
-.btn-text,
-.btn-icon {
-    position: relative;
-    z-index: 1;
-}
-
-.btn-icon {
-    font-size: 1.5rem;
+.portal-card {
+    background: var(--clean-white);
+    padding: 50px 40px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-soft);
+    text-align: center;
+    border-top: 5px solid var(--academic-gold);
+    max-width: 600px;
+    margin: 0 auto;
     transition: transform 0.3s ease;
 }
 
-.search-btn:hover .btn-icon {
-    transform: translateX(-5px);
+.portal-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-active);
 }
 
-/* ===== قسم الإرشادات ===== */
-.instructions-section {
-    margin-bottom: 40px;
-    animation: fadeInUp 0.8s ease-out 0.4s both;
+.portal-title {
+    color: var(--academic-navy);
+    margin-bottom: 10px;
+    font-size: 1.6rem;
 }
 
-.instructions-card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: var(--shadow-md);
+.portal-subtitle {
+    color: var(--text-grey);
+    margin-bottom: 30px;
 }
 
-.instructions-header {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 25px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid var(--glass-border);
+.search-box {
+    margin-bottom: 30px;
 }
 
-.instructions-icon {
-    font-size: 2rem;
-    filter: drop-shadow(0 0 10px rgba(102, 126, 234, 0.5));
-}
-
-.instructions-header h2 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    background: var(--primary-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.instructions-content {
-    display: grid;
-    gap: 15px;
-}
-
-.instruction-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 15px;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    transition: all 0.3s ease;
-}
-
-.instruction-item:hover {
-    background: rgba(255, 255, 255, 0.06);
-    transform: translateX(5px);
-    border-color: var(--accent-blue);
-}
-
-.instruction-emoji {
-    font-size: 1.5rem;
-    flex-shrink: 0;
-}
-
-.instruction-text {
-    flex: 1;
-    font-size: 1rem;
-    color: var(--text-primary);
-    line-height: 1.6;
-    text-align: right;
-}
-
-.instruction-text strong {
-    color: var(--accent-blue);
-    font-weight: 700;
-}
-
-.highlight-time {
-    color: var(--accent-pink);
-    font-weight: 800;
-    font-size: 1.1rem;
-    text-decoration: underline;
-    text-decoration-color: var(--accent-pink);
-    text-decoration-thickness: 2px;
-}
-
-/* ===== منطقة النتائج ===== */
-.result-section {
-    animation: fadeInScale 0.5s ease-out;
-}
-
-.result-card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
-    direction: rtl;
-    border-radius: 25px;
-    padding: 40px;
-    box-shadow: var(--shadow-lg);
+.input-group {
     position: relative;
-    overflow: hidden;
-}
-
-.result-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 5px;
-    background: var(--success-gradient);
-}
-
-/* رأس الجامعة في البطاقة */
-.card-university-header {
-    text-align: center;
     margin-bottom: 20px;
 }
 
-.card-university-logo {
-    font-size: 3rem;
+.input-group .icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    color: var(--text-grey);
+}
+
+.input-group input {
+    width: 100%;
+    padding: 15px 50px 15px 15px;
+    font-size: 1.1rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    transition: 0.3s;
+    outline: none;
+}
+
+.input-group input:focus {
+    border-color: var(--academic-navy);
+    box-shadow: 0 0 0 3px rgba(0, 33, 71, 0.1);
+}
+
+.primary-btn {
+    width: 100%;
+    padding: 15px;
+    background: var(--academic-navy);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.primary-btn:hover {
+    background: #003366;
+}
+
+.portal-footer {
+    text-align: center;
+    margin-top: 50px;
+    color: var(--text-grey);
+    font-size: 0.9rem;
+}
+
+.dev-name {
+    color: var(--academic-navy);
+    font-weight: 700;
+}
+
+/* ===== Result Page (Official Document) Style ===== */
+.action-bar {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.secondary-btn {
+    background: transparent;
+    border: 2px solid var(--text-grey);
+    color: var(--text-grey);
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.secondary-btn:hover {
+    border-color: var(--academic-navy);
+    color: var(--academic-navy);
+}
+
+.action-btn {
+    background: var(--academic-gold);
+    color: var(--academic-navy);
+    border: none;
+    padding: 10px 25px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 700;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    transition: 0.3s;
+}
+
+.action-btn:hover {
+    background: var(--academic-gold-light);
+}
+
+.official-document {
+    background: white;
+    padding: 60px;
+    border: 1px solid #ddd;
+    box-shadow: var(--shadow-soft);
+    position: relative;
+    /* Aspect ratio close to A4 */
+    min-height: 297mm;
+    margin: 0 auto;
+}
+
+/* Document Header */
+.doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.doc-logo {
+    font-size: 4.5rem;
+}
+
+.doc-titles {
+    flex: 1;
+    text-align: center;
+}
+
+.doc-titles h1,
+.doc-titles h2,
+.doc-titles h3 {
+    margin: 2px 0;
+    line-height: 1.2;
+}
+
+.doc-titles h1 {
+    font-family: var(--font-formal);
+    font-size: 2rem;
+    color: black;
+}
+
+.doc-titles h2 {
+    font-family: var(--font-formal);
+    font-size: 1.4rem;
+    color: #444;
+}
+
+.doc-titles h3 {
+    font-family: var(--font-formal);
+    font-size: 1.1rem;
+    color: #666;
+}
+
+.doc-date {
+    text-align: left;
+    font-size: 0.9rem;
+    color: #444;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    min-width: 150px;
+}
+
+.doc-separator {
+    height: 3px;
+    background: black;
+    margin-bottom: 30px;
+    border-bottom: 1px solid black;
+    /* Double line effect */
+}
+
+.doc-title-box {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.doc-title-box h2 {
+    font-family: var(--font-formal);
+    font-size: 2.2rem;
+    text-decoration: underline;
+    margin-bottom: 5px;
+}
+
+.doc-title-box p {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #555;
+    letter-spacing: 1px;
+}
+
+/* Info Grid */
+.student-info-grid {
+    border: 2px solid #000;
+    padding: 20px;
+    margin-bottom: 40px;
+    background: #fdfdfd;
+}
+
+.info-row {
+    margin-bottom: 20px;
+    border-bottom: 1px dashed #ccc;
+    padding-bottom: 10px;
+}
+
+.info-row.two-col {
+    display: flex;
+    gap: 20px;
+}
+
+.info-row.two-col .col {
+    flex: 1;
+}
+
+.info-label {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.info-value {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #000;
+    font-family: var(--font-formal);
+}
+
+.seat-hall-container {
+    display: flex;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.box-item {
+    flex: 1;
+    border: 2px solid var(--academic-navy);
+    padding: 15px;
+    text-align: center;
+    background: rgba(0, 33, 71, 0.02);
+}
+
+.box-label {
+    font-weight: 700;
+    color: var(--academic-navy);
+    font-size: 1.2rem;
+}
+
+.box-sublabel {
+    font-size: 0.8rem;
+    color: var(--text-grey);
     margin-bottom: 10px;
 }
 
-.card-university-name {
-    font-size: 1.5rem;
+.box-value {
     font-weight: 800;
-    background: var(--primary-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 5px;
+    color: black;
 }
 
-.card-faculty-name {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--text-secondary);
+.big-number {
+    font-size: 2.5rem;
+    color: var(--action-red);
 }
 
-.card-divider {
-    height: 2px;
-    background: var(--primary-gradient);
-    margin: 20px 0;
-    border-radius: 2px;
-    opacity: 0.3;
-}
-
-.result-header {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    margin-bottom: 30px;
-    padding-bottom: 25px;
-    border-bottom: 1px solid var(--glass-border);
-}
-
-.result-icon {
-    width: 70px;
-    height: 70px;
-    background: var(--success-gradient);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    box-shadow: 0 0 30px rgba(79, 172, 254, 0.5);
-    animation: pulse 2s infinite;
-}
-
-.result-title {
-    flex: 1;
-}
-
-.result-title h2 {
+.hall-name {
     font-size: 1.8rem;
-    margin-bottom: 5px;
-    background: var(--success-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
 }
 
-.result-title p {
-    color: var(--text-secondary);
-    font-size: 1rem;
+/* Instructions */
+.doc-instructions {
+    margin-bottom: 50px;
+    padding: 20px;
+    border: 1px solid #eee;
+    background: #fff;
 }
 
-.result-details {
-    display: grid;
-    gap: 20px;
+.doc-instructions h3 {
+    margin-bottom: 15px;
+    text-decoration: underline;
 }
 
-.detail-item {
+.doc-instructions ul {
+    list-style-position: inside;
+}
+
+.doc-instructions li {
+    margin-bottom: 8px;
+}
+
+/* Doc Footer */
+.doc-footer {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    gap: 15px;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    transition: all 0.3s ease;
-    direction: rtl;
+    align-items: flex-end;
+    margin-top: 50px;
 }
 
-.detail-item:hover {
-    background: rgba(255, 255, 255, 0.06);
-    transform: translateX(5px);
-    border-color: var(--accent-blue);
-}
-
-.detail-icon {
-    width: 50px;
-    height: 50px;
-    background: var(--primary-gradient);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    flex-shrink: 0;
-}
-
-.detail-content {
-    flex: 1;
-    text-align: right;
-}
-
-.detail-label {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    margin-bottom: 5px;
-}
-
-.detail-value {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--text-primary);
-}
-
-/* تمييز رقم الجلوس */
-.detail-item.highlight {
-    background: rgba(79, 172, 254, 0.1);
-    border: 2px solid var(--accent-blue);
-    box-shadow: 0 0 20px rgba(79, 172, 254, 0.3);
-}
-
-.detail-item.highlight .detail-value {
-    font-size: 1.6rem;
-    background: var(--success-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-/* ===== تذييل البطاقة ===== */
-.card-footer {
-    margin-top: 30px;
-    padding-top: 25px;
-    border-top: 1px solid var(--glass-border);
-}
-
-.approval-section {
+.signature-block {
     text-align: center;
-    padding: 20px;
-}
-
-.approval-label {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 20px;
-    letter-spacing: 0.5px;
-}
-
-.signature-line {
     width: 200px;
-    height: 2px;
-    background: linear-gradient(to left, transparent, var(--accent-blue), transparent);
-    margin: 0 auto;
-    position: relative;
 }
 
-.signature-line::before {
-    content: '';
-    position: absolute;
-    top: -3px;
-    right: 0;
-    width: 8px;
-    height: 8px;
-    background: var(--accent-blue);
-    border-radius: 50%;
-    box-shadow: 0 0 10px var(--accent-blue);
-}
-
-/* ===== أزرار الطباعة ===== */
-.print-actions {
-    display: flex;
-    gap: 15px;
-    margin-top: 25px;
-    flex-wrap: wrap;
-}
-
-.print-btn {
-    flex: 1;
-    background: var(--success-gradient);
-    border: none;
-    color: white;
-    padding: 15px;
-    border-radius: 15px;
-    font-size: 1.1rem;
+.sig-title {
     font-weight: 700;
-    font-family: var(--font-primary);
-    cursor: pointer;
+    margin-bottom: 30px;
+}
+
+.sig-image {
+    font-family: 'Reem Kufi', sans-serif;
+    /* Placeholder for signature font */
+    font-size: 1.2rem;
+    color: var(--academic-navy);
+}
+
+.doc-id {
+    font-size: 0.8rem;
+    color: #999;
+}
+
+/* ===== Loading & Error ===== */
+.loading-indicator {
+    margin-top: 20px;
+    color: var(--academic-navy);
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.spinner {
+    width: 30px;
+    height: 30px;
+    border: 3px solid rgba(0, 33, 71, 0.2);
+    border-top-color: var(--academic-navy);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.error-message {
+    margin-top: 20px;
+    padding: 15px;
+    background: #ffebee;
+    color: #c62828;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    box-shadow: var(--shadow-md);
-    transition: all 0.3s ease;
-    min-width: 250px;
-}
-
-.report-btn {
-    background: var(--primary-gradient);
-}
-
-
-.print-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 40px rgba(0, 242, 254, 0.4), var(--shadow-lg);
-}
-
-.print-btn:active {
-    transform: translateY(0);
-}
-
-/* ===== رسالة عدم وجود نتائج ===== */
-.not-found-section {
-    animation: fadeInScale 0.5s ease-out;
-}
-
-.not-found-card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
-    border-radius: 25px;
-    padding: 60px 40px;
-    text-align: center;
-    box-shadow: var(--shadow-lg);
-}
-
-.not-found-icon {
-    font-size: 5rem;
-    margin-bottom: 20px;
-    animation: shake 0.5s ease-in-out;
-}
-
-.not-found-title {
-    font-size: 2rem;
-    margin-bottom: 15px;
-    color: var(--accent-pink);
-}
-
-.not-found-text {
-    font-size: 1.2rem;
-    color: var(--text-secondary);
-    margin-bottom: 10px;
-}
-
-.not-found-hint {
-    font-size: 1rem;
-    color: var(--text-secondary);
-    opacity: 0.7;
-}
-
-/* ===== رسالة التحميل ===== */
-.loading-section {
-    text-align: center;
-    padding: 40px;
-    animation: fadeIn 0.3s ease-out;
-}
-
-.loading-spinner {
-    width: 60px;
-    height: 60px;
-    margin: 0 auto 20px;
-    border: 4px solid rgba(255, 255, 255, 0.1);
-    border-top: 4px solid var(--accent-blue);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-.loading-text {
-    font-size: 1.2rem;
-    color: var(--text-secondary);
-}
-
-/* ===== التذييل ===== */
-.footer {
-    text-align: center;
-    padding: 30px 20px;
-    color: var(--text-secondary);
-    font-size: 0.95rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    margin-top: 60px;
-}
-
-.footer p {
-    margin-bottom: 8px;
-}
-
-.developer-credit {
-    font-size: 0.9rem;
-    opacity: 0.8;
-}
-
-.developer-credit strong {
-    color: var(--accent-blue);
-    font-weight: 700;
-}
-
-/* ===== الرسوم المتحركة ===== */
-@keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-30px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes fadeInScale {
-    from {
-        opacity: 0;
-        transform: scale(0.9);
-    }
-
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes bounce {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-10px);
-    }
-}
-
-@keyframes pulse {
-
-    0%,
-    100% {
-        transform: scale(1);
-        box-shadow: 0 0 30px rgba(79, 172, 254, 0.5);
-    }
-
-    50% {
-        transform: scale(1.05);
-        box-shadow: 0 0 50px rgba(79, 172, 254, 0.8);
-    }
+    animation: shake 0.4s ease;
 }
 
 @keyframes shake {
@@ -856,291 +486,53 @@ body {
     }
 
     25% {
-        transform: translateX(-10px);
+        transform: translateX(-5px);
     }
 
     75% {
-        transform: translateX(10px);
+        transform: translateX(5px);
     }
 }
 
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* ===== التجاوب مع الشاشات ===== */
-@media (max-width: 768px) {
-    .container {
-        padding: 20px 15px;
-    }
-
-    .university-header {
-        padding: 20px 15px;
-    }
-
-    .university-logo {
-        font-size: 3rem;
-    }
-
-    .university-name {
-        font-size: 1.5rem;
-    }
-
-    .faculty-name {
-        font-size: 1.2rem;
-    }
-
-    .department-name {
-        font-size: 1rem;
-    }
-
-    .main-title {
-        font-size: 2rem;
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .title-icon {
-        font-size: 2.5rem;
-    }
-
-    .subtitle {
-        font-size: 1rem;
-    }
-
-    .search-input {
-        font-size: 1rem;
-    }
-
-    .search-btn {
-        font-size: 1.1rem;
-        padding: 15px 30px;
-    }
-
-    .result-card {
-        padding: 25px;
-    }
-
-    .result-header {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .result-title h2 {
-        font-size: 1.4rem;
-    }
-
-    .detail-value {
-        font-size: 1.1rem;
-    }
-
-    .not-found-card {
-        padding: 40px 20px;
-    }
-
-    .not-found-icon {
-        font-size: 3.5rem;
-    }
-
-    .not-found-title {
-        font-size: 1.5rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .container {
-        padding: 15px 10px;
-    }
-
-    .university-header {
-        padding: 15px 10px;
-    }
-
-    .university-logo {
-        font-size: 2.5rem;
-    }
-
-    .university-name {
-        font-size: 1.3rem;
-    }
-
-    .faculty-name {
-        font-size: 1.1rem;
-    }
-
-    .department-name {
-        font-size: 0.95rem;
-    }
-
-    .main-title {
-        font-size: 1.6rem;
-    }
-
-    .search-container {
-        padding: 8px 15px;
-    }
-
-    .search-input {
-        font-size: 0.95rem;
-    }
-
-    .detail-item {
-        flex-direction: column;
-        text-align: center;
-    }
-}
-
-/* ===== تنسيقات الطباعة (PDF) ===== */
+/* ===== PRINT STYLES (CRITICAL) ===== */
 @media print {
 
-    /* إخفاء واجهة الموقع */
-    body>*:not(.print-document) {
-        display: none !important;
+    /* Hide everything except document */
+    body * {
+        visibility: hidden;
     }
 
-    /* إظهار وتنسيق مستند الطباعة */
-    .print-document {
-        display: block !important;
+    #officialDocument,
+    #officialDocument * {
+        visibility: visible;
+    }
+
+    #officialDocument {
         position: absolute;
-        top: 0;
         left: 0;
+        top: 0;
         width: 100%;
-        background: white;
-        color: black;
-        padding: 40px;
-        direction: rtl;
-        font-family: 'Tajawal', sans-serif;
+        margin: 0;
+        padding: 0;
+        /* Remove padding to fit paper */
+        border: none;
+        box-shadow: none;
     }
 
-    body {
-        background: white !important;
-        height: auto !important;
-        overflow: visible !important;
+    /* Ensure background colors print */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
     }
 
-    .print-header {
-        text-align: center;
-        margin-bottom: 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 3px double #000;
-        padding-bottom: 15px;
+    /* Force page break avoidance inside key elements */
+    .student-info-grid,
+    .doc-instructions {
+        break-inside: avoid;
     }
 
-    .print-logo {
-        font-size: 4rem;
+    @page {
+        size: A4;
+        margin: 1cm;
     }
-
-    .print-university-info h1 {
-        font-size: 24pt;
-        margin-bottom: 5px;
-    }
-
-    .print-university-info h2 {
-        font-size: 18pt;
-        margin-bottom: 5px;
-    }
-
-    .print-university-info h3 {
-        font-size: 16pt;
-    }
-
-    .print-date {
-        font-size: 12pt;
-    }
-
-    .print-divider {
-        display: none;
-    }
-
-    .print-title {
-        text-align: center;
-        font-size: 22pt;
-        margin: 30px 0;
-        text-decoration: underline;
-    }
-
-    .print-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 40px;
-        font-size: 14pt;
-    }
-
-    .print-table th,
-    .print-table td {
-        border: 1px solid #000;
-        padding: 15px;
-        text-align: right;
-    }
-
-    .print-table th {
-        background-color: #f0f0f0 !important;
-        width: 30%;
-        font-weight: bold;
-        -webkit-print-color-adjust: exact;
-    }
-
-    .highlight-print {
-        font-weight: bold;
-        font-size: 16pt;
-    }
-
-    .print-instructions {
-        margin-top: 40px;
-        border: 2px solid #000;
-        padding: 20px;
-        border-radius: 10px;
-    }
-
-    .print-instructions h3 {
-        margin-bottom: 15px;
-        font-size: 16pt;
-        text-decoration: underline;
-    }
-
-    .print-instructions ol {
-        margin-right: 25px;
-        line-height: 1.8;
-        font-size: 13pt;
-    }
-
-    .exam-time-note {
-        margin-top: 15px;
-        font-weight: bold;
-        text-align: center;
-        font-size: 14pt;
-        border-top: 1px dashed #000;
-        padding-top: 10px;
-    }
-
-    .print-footer {
-        margin-top: 60px;
-        display: flex;
-        justify-content: flex-end;
-        padding-left: 50px;
-    }
-
-    .print-signature {
-        text-align: center;
-    }
-
-    .print-signature p {
-        font-size: 16pt;
-        font-weight: bold;
-        margin-bottom: 40px;
-    }
-
-    .signature-space {
-        font-size: 14pt;
-        font-family: 'Amiri', serif;
-    }
-}
-
-/* إخفاء مستند الطباعة في الشاشة */
-.print-document {
-    display: none;
 }
