@@ -338,6 +338,93 @@ body {
     transform: translateX(-5px);
 }
 
+/* ===== قسم الإرشادات ===== */
+.instructions-section {
+    margin-bottom: 40px;
+    animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+
+.instructions-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: var(--shadow-md);
+}
+
+.instructions-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.instructions-icon {
+    font-size: 2rem;
+    filter: drop-shadow(0 0 10px rgba(102, 126, 234, 0.5));
+}
+
+.instructions-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.instructions-content {
+    display: grid;
+    gap: 15px;
+}
+
+.instruction-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+}
+
+.instruction-item:hover {
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateX(5px);
+    border-color: var(--accent-blue);
+}
+
+.instruction-emoji {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.instruction-text {
+    flex: 1;
+    font-size: 1rem;
+    color: var(--text-primary);
+    line-height: 1.6;
+    text-align: right;
+}
+
+.instruction-text strong {
+    color: var(--accent-blue);
+    font-weight: 700;
+}
+
+.highlight-time {
+    color: var(--accent-pink);
+    font-weight: 800;
+    font-size: 1.1rem;
+    text-decoration: underline;
+    text-decoration-color: var(--accent-pink);
+    text-decoration-thickness: 2px;
+}
+
 /* ===== منطقة النتائج ===== */
 .result-section {
     animation: fadeInScale 0.5s ease-out;
@@ -647,6 +734,20 @@ body {
     font-size: 0.95rem;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
     margin-top: 60px;
+}
+
+.footer p {
+    margin-bottom: 8px;
+}
+
+.developer-credit {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.developer-credit strong {
+    color: var(--accent-blue);
+    font-weight: 700;
 }
 
 /* ===== الرسوم المتحركة ===== */
