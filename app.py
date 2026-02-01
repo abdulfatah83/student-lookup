@@ -1,16 +1,68 @@
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import sqlite3
+import json
 import os
 
 app = Flask(__name__, static_folder='.')
 CORS(app)  # السماح بالطلبات من أي مصدر
+
+def init_database():
+    """إنشاء قاعدة البيانات وتعبئتها تلقائياً"""
+    if not os.path.exists('students.db'):
+        print("Creating database...")
+        conn = sqlite3.connect('students.db')
+        cursor = conn.cursor()
+        
+        # إنشاء جدول الطلبة
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS students (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            registration_number TEXT UNIQUE NOT NULL,
+            seat_number TEXT NOT NULL,
+            academic_year TEXT NOT NULL,
+            exam_hall TEXT NOT NULL
+        )
+        ''')
+        
+        # إنشاء index للبحث السريع
+        cursor.execute('''
+        CREATE INDEX IF NOT EXISTS idx_registration 
+        ON students(registration_number)
+        ''')
+        
+        # استيراد البيانات من JSON
+        if os.path.exists('students_data.json'):
+            with open('students_data.json', 'r', encoding='utf-8') as f:
+                students = json.load(f)
+            
+            for student in students:
+                cursor.execute('''
+                INSERT INTO students (name, registration_number, seat_number, academic_year, exam_hall)
+                VALUES (?, ?, ?, ?, ?)
+                ''', (
+                    student['name'],
+                    student['registrationNumber'],
+                    student['seatNumber'],
+                    student['academicYear'],
+                    student['examHall']
+                ))
+            
+            conn.commit()
+            count = cursor.execute('SELECT COUNT(*) FROM students').fetchone()[0]
+            print(f"Database created with {count} students")
+        
+        conn.close()
 
 def get_db_connection():
     """إنشاء اتصال بقاعدة البيانات"""
     conn = sqlite3.connect('students.db')
     conn.row_factory = sqlite3.Row
     return conn
+
+# تهيئة قاعدة البيانات عند بدء التطبيق
+init_database()
 
 @app.route('/')
 def index():
@@ -89,12 +141,6 @@ def health_check():
         }), 500
 
 if __name__ == '__main__':
-    # التأكد من وجود قاعدة البيانات
-    if not os.path.exists('students.db'):
-        print("⚠️ قاعدة البيانات غير موجودة. قم بتشغيل database.py أولاً")
-        print("python database.py")
-        exit(1)
-    
-    print("🚀 بدء تشغيل الخادم...")
-    print("📍 الموقع متاح على: http://localhost:5000")
+    print("Starting server...")
+    print("Server available at: http://localhost:5000")
     app.run(debug=True, host='0.0.0.0', port=5000)
