@@ -45,6 +45,19 @@ body {
     flex-direction: column;
     overflow-x: hidden;
     position: relative;
+    text-align: right;
+    /* Default alignment for Arabic */
+}
+
+/* Center alignment for specific containers */
+.container,
+.header,
+.university-header,
+.footer,
+.search-btn,
+.not-found-card,
+.loading-section {
+    text-align: center;
 }
 
 /* ===== خلفية متحركة ===== */
@@ -635,15 +648,22 @@ body {
     box-shadow: 0 0 10px var(--accent-blue);
 }
 
-/* ===== زر الطباعة ===== */
+/* ===== أزرار الطباعة ===== */
+.print-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+    flex-wrap: wrap;
+}
+
 .print-btn {
-    width: 100%;
+    flex: 1;
     background: var(--success-gradient);
     border: none;
     color: white;
-    padding: 15px 30px;
+    padding: 15px;
     border-radius: 15px;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 700;
     font-family: var(--font-primary);
     cursor: pointer;
@@ -653,8 +673,13 @@ body {
     gap: 10px;
     box-shadow: var(--shadow-md);
     transition: all 0.3s ease;
-    margin-top: 20px;
+    min-width: 250px;
 }
+
+.report-btn {
+    background: var(--primary-gradient);
+}
+
 
 .print-btn:hover {
     transform: translateY(-2px);
@@ -965,4 +990,157 @@ body {
         flex-direction: column;
         text-align: center;
     }
+}
+
+/* ===== تنسيقات الطباعة (PDF) ===== */
+@media print {
+
+    /* إخفاء واجهة الموقع */
+    body>*:not(.print-document) {
+        display: none !important;
+    }
+
+    /* إظهار وتنسيق مستند الطباعة */
+    .print-document {
+        display: block !important;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background: white;
+        color: black;
+        padding: 40px;
+        direction: rtl;
+        font-family: 'Tajawal', sans-serif;
+    }
+
+    body {
+        background: white !important;
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    .print-header {
+        text-align: center;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 3px double #000;
+        padding-bottom: 15px;
+    }
+
+    .print-logo {
+        font-size: 4rem;
+    }
+
+    .print-university-info h1 {
+        font-size: 24pt;
+        margin-bottom: 5px;
+    }
+
+    .print-university-info h2 {
+        font-size: 18pt;
+        margin-bottom: 5px;
+    }
+
+    .print-university-info h3 {
+        font-size: 16pt;
+    }
+
+    .print-date {
+        font-size: 12pt;
+    }
+
+    .print-divider {
+        display: none;
+    }
+
+    .print-title {
+        text-align: center;
+        font-size: 22pt;
+        margin: 30px 0;
+        text-decoration: underline;
+    }
+
+    .print-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 40px;
+        font-size: 14pt;
+    }
+
+    .print-table th,
+    .print-table td {
+        border: 1px solid #000;
+        padding: 15px;
+        text-align: right;
+    }
+
+    .print-table th {
+        background-color: #f0f0f0 !important;
+        width: 30%;
+        font-weight: bold;
+        -webkit-print-color-adjust: exact;
+    }
+
+    .highlight-print {
+        font-weight: bold;
+        font-size: 16pt;
+    }
+
+    .print-instructions {
+        margin-top: 40px;
+        border: 2px solid #000;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    .print-instructions h3 {
+        margin-bottom: 15px;
+        font-size: 16pt;
+        text-decoration: underline;
+    }
+
+    .print-instructions ol {
+        margin-right: 25px;
+        line-height: 1.8;
+        font-size: 13pt;
+    }
+
+    .exam-time-note {
+        margin-top: 15px;
+        font-weight: bold;
+        text-align: center;
+        font-size: 14pt;
+        border-top: 1px dashed #000;
+        padding-top: 10px;
+    }
+
+    .print-footer {
+        margin-top: 60px;
+        display: flex;
+        justify-content: flex-end;
+        padding-left: 50px;
+    }
+
+    .print-signature {
+        text-align: center;
+    }
+
+    .print-signature p {
+        font-size: 16pt;
+        font-weight: bold;
+        margin-bottom: 40px;
+    }
+
+    .signature-space {
+        font-size: 14pt;
+        font-family: 'Amiri', serif;
+    }
+}
+
+/* إخفاء مستند الطباعة في الشاشة */
+.print-document {
+    display: none;
 }
