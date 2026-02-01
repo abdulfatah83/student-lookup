@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="الاستعلام عن رقم الجلوس للطلبة باستخدام رقم القيد">
+    <meta name="keywords" content="رقم الجلوس, رقم القيد, استعلام, طلبة">
+    <title>الاستعلام عن رقم الجلوس</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- html2canvas for converting to image -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- خلفية متحركة -->
+    <div class="background-animation">
+        <div class="floating-shape shape-1"></div>
+        <div class="floating-shape shape-2"></div>
+        <div class="floating-shape shape-3"></div>
+    </div>
+
+    <!-- الحاوية الرئيسية -->
+    <main class="container">
+        <!-- رأس الجامعة -->
+        <div class="university-header">
+            <div class="university-logo">🎓</div>
+            <div class="university-info">
+                <h1 class="university-name">جامعة المرقب</h1>
+                <h2 class="faculty-name">كلية العلوم الصحية</h2>
+                <h3 class="department-name">قسم المختبرات الطبية</h3>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- العنوان -->
+        <header class="header">
+            <h1 class="main-title">
+                <span class="title-icon">🎓</span>
+                الاستعلام عن رقم الجلوس
+            </h1>
+            <p class="subtitle">أدخل رقم القيد للحصول على معلومات الجلوس</p>
+        </header>
+
+        <!-- نموذج البحث -->
+        <section class="search-section">
+            <div class="search-container">
+                <div class="search-icon">🔍</div>
+                <input type="text" id="searchInput" class="search-input" placeholder="أدخل رقم القيد (مثال: 222031353)"
+                    autocomplete="off" inputmode="numeric">
+                <button id="clearBtn" class="clear-btn" style="display: none;">✕</button>
+            </div>
+            <button id="searchBtn" class="search-btn">
+                <span class="btn-text">بحث</span>
+                <span class="btn-icon">→</span>
+            </button>
+        </section>
+
+        <!-- منطقة النتائج -->
+        <section id="resultSection" class="result-section" style="display: none;">
+            <!-- سيتم إضافة النتائج هنا بواسطة JavaScript -->
+        </section>
+
+        <!-- رسالة عدم وجود نتائج -->
+        <section id="notFoundSection" class="not-found-section" style="display: none;">
+            <div class="not-found-card">
+                <div class="not-found-icon">❌</div>
+                <h2 class="not-found-title">لم يتم العثور على نتائج</h2>
+                <p class="not-found-text">رقم القيد غير موجود في قاعدة البيانات</p>
+                <p class="not-found-hint">تأكد من إدخال رقم القيد بشكل صحيح</p>
+            </div>
+        </section>
+
+        <!-- رسالة التحميل -->
+        <section id="loadingSection" class="loading-section" style="display: none;">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">جاري البحث...</p>
+        </section>
+    </main>
+
+    <!-- تذييل -->
+    <footer class="footer">
+        <p>© 2026 نظام الاستعلام عن أرقام الجلوس</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
